@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<pnml xmlns="http://www.informatik.hu-berlin.de/top/pnml/ptNetb">
+  <shared-transition name="add_drone" player="0" urgent="false"/>
+  <shared-transition name="drone_listed_in_queue" player="0" urgent="false"/>
+  <shared-transition name="available" player="0" urgent="false"/>
+  <shared-transition name="not_available" player="0" urgent="false"/>
+  <shared-transition name="available1" player="0" urgent="false"/>
+  <shared-transition name="not_available1" player="0" urgent="false"/>
+  <shared-transition name="available2" player="0" urgent="false"/>
+  <shared-transition name="not_available2" player="0" urgent="false"/>
+  <net active="true" id="request_handler" type="P/T net">
+    <place displayName="true" id="listening" initialMarking="1" invariant="&lt; inf" name="listening" nameOffsetX="0" nameOffsetY="0" positionX="105" positionY="75"/>
+    <place displayName="true" id="waiting" initialMarking="0" invariant="&lt; inf" name="waiting" nameOffsetX="0" nameOffsetY="0" positionX="330" positionY="75"/>
+    <place displayName="true" id="update" initialMarking="0" invariant="&lt; inf" name="update" nameOffsetX="0" nameOffsetY="0" positionX="210" positionY="195"/>
+    <transition angle="0" displayName="true" id="T0" infiniteServer="false" name="T0" nameOffsetX="0" nameOffsetY="0" player="0" positionX="210" positionY="75" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="add_drone" infiniteServer="false" name="add_drone" nameOffsetX="0" nameOffsetY="0" player="0" positionX="330" positionY="195" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="drone_listed_in_queue" infiniteServer="false" name="drone_listed_in_queue" nameOffsetX="42" nameOffsetY="-11" player="0" positionX="105" positionY="195" priority="0" urgent="false"/>
+    <arc id="A0" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="listening" target="T0" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="135" yCoord="90"/>
+      <arcpath arcPointType="false" id="1" xCoord="219" yCoord="90"/>
+    </arc>
+    <arc id="A1" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T0" target="waiting" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="229" yCoord="90"/>
+      <arcpath arcPointType="false" id="1" xCoord="330" yCoord="90"/>
+    </arc>
+    <arc id="A3" inscription="1" nameOffsetX="0" nameOffsetY="0" source="add_drone" target="update" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="339" yCoord="210"/>
+      <arcpath arcPointType="false" id="1" xCoord="240" yCoord="210"/>
+    </arc>
+    <arc id="A6" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="update" target="drone_listed_in_queue" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="210" yCoord="210"/>
+      <arcpath arcPointType="false" id="1" xCoord="124" yCoord="210"/>
+    </arc>
+    <arc id="A4" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="waiting" target="add_drone" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="359" yCoord="91"/>
+      <arcpath arcPointType="false" id="1" xCoord="481" yCoord="103"/>
+      <arcpath arcPointType="false" id="2" xCoord="477" yCoord="216"/>
+      <arcpath arcPointType="false" id="3" xCoord="349" yCoord="210"/>
+    </arc>
+    <arc id="A5" inscription="1" nameOffsetX="0" nameOffsetY="0" source="drone_listed_in_queue" target="listening" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="114" yCoord="210"/>
+      <arcpath arcPointType="false" id="1" xCoord="75" yCoord="226"/>
+      <arcpath arcPointType="false" id="2" xCoord="76" yCoord="100"/>
+      <arcpath arcPointType="false" id="3" xCoord="105" yCoord="93"/>
+    </arc>
+  </net>
+  <net active="true" id="drone_queue" type="P/T net">
+    <place displayName="true" id="idle" initialMarking="1" invariant="&lt; inf" name="idle" nameOffsetX="0" nameOffsetY="0" positionX="180" positionY="120"/>
+    <place displayName="true" id="busy" initialMarking="0" invariant="&lt; inf" name="busy" nameOffsetX="0" nameOffsetY="0" positionX="381" positionY="124"/>
+    <transition angle="0" displayName="true" id="add_drone" infiniteServer="false" name="add_drone" nameOffsetX="0" nameOffsetY="0" player="0" positionX="268" positionY="50" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="drone_listed_in_queue" infiniteServer="false" name="drone_listed_in_queue" nameOffsetX="54" nameOffsetY="54" player="0" positionX="270" positionY="210" priority="0" urgent="false"/>
+    <arc id="A0" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="idle" target="add_drone" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="194" yCoord="120"/>
+      <arcpath arcPointType="false" id="1" xCoord="193" yCoord="65"/>
+      <arcpath arcPointType="false" id="2" xCoord="277" yCoord="65"/>
+    </arc>
+    <arc id="A1" inscription="1" nameOffsetX="0" nameOffsetY="0" source="add_drone" target="busy" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="287" yCoord="65"/>
+      <arcpath arcPointType="false" id="1" xCoord="394" yCoord="63"/>
+      <arcpath arcPointType="false" id="2" xCoord="395" yCoord="124"/>
+    </arc>
+    <arc id="A2" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="busy" target="drone_listed_in_queue" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="395" yCoord="153"/>
+      <arcpath arcPointType="false" id="1" xCoord="395" yCoord="225"/>
+      <arcpath arcPointType="false" id="2" xCoord="289" yCoord="225"/>
+    </arc>
+    <arc id="A3" inscription="1" nameOffsetX="0" nameOffsetY="0" source="drone_listed_in_queue" target="idle" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="279" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="196" yCoord="226"/>
+      <arcpath arcPointType="false" id="2" xCoord="195" yCoord="149"/>
+    </arc>
+  </net>
+  <net active="true" id="charge_station_1" type="P/T net">
+    <place displayName="true" id="idle" initialMarking="1" invariant="&lt; inf" name="idle" nameOffsetX="0" nameOffsetY="0" positionX="105" positionY="75"/>
+    <place displayName="true" id="swapping_battery" initialMarking="0" invariant="&lt; inf" name="swapping_battery" nameOffsetX="0" nameOffsetY="0" positionX="360" positionY="77"/>
+    <place displayName="true" id="discharge" initialMarking="0" invariant="&lt; inf" name="discharge" nameOffsetX="0" nameOffsetY="0" positionX="223" positionY="210"/>
+    <transition angle="0" displayName="true" id="available1" infiniteServer="false" name="available1" nameOffsetX="0" nameOffsetY="0" player="0" positionX="215" positionY="77" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="not_available1" infiniteServer="false" name="not_available1" nameOffsetX="0" nameOffsetY="0" player="0" positionX="362" positionY="210" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="T2" infiniteServer="false" name="T2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="105" positionY="210" priority="0" urgent="false"/>
+    <arc id="A0" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="idle" target="available1" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="134" yCoord="90"/>
+      <arcpath arcPointType="false" id="1" xCoord="224" yCoord="92"/>
+    </arc>
+    <arc id="A1" inscription="1" nameOffsetX="0" nameOffsetY="0" source="available1" target="swapping_battery" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="234" yCoord="92"/>
+      <arcpath arcPointType="false" id="1" xCoord="360" yCoord="92"/>
+    </arc>
+    <arc id="A2" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="swapping_battery" target="not_available1" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="389" yCoord="92"/>
+      <arcpath arcPointType="false" id="1" xCoord="468" yCoord="93"/>
+      <arcpath arcPointType="false" id="2" xCoord="468" yCoord="227"/>
+      <arcpath arcPointType="false" id="3" xCoord="381" yCoord="225"/>
+    </arc>
+    <arc id="A3" inscription="1" nameOffsetX="0" nameOffsetY="0" source="not_available1" target="discharge" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="371" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="253" yCoord="225"/>
+    </arc>
+    <arc id="A4" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="discharge" target="T2" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="223" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="124" yCoord="225"/>
+    </arc>
+    <arc id="A5" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T2" target="idle" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="114" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="65" yCoord="227"/>
+      <arcpath arcPointType="false" id="2" xCoord="66" yCoord="91"/>
+      <arcpath arcPointType="false" id="3" xCoord="105" yCoord="90"/>
+    </arc>
+  </net>
+  <net active="true" id="scheduler" type="P/T net">
+    <place displayName="true" id="choose" initialMarking="0" invariant="&lt; inf" name="choose" nameOffsetX="0" nameOffsetY="0" positionX="101" positionY="90"/>
+    <place displayName="true" id="checking" initialMarking="0" invariant="&lt; inf" name="checking" nameOffsetX="0" nameOffsetY="0" positionX="368" positionY="90"/>
+    <place displayName="true" id="lock_resource_1" initialMarking="0" invariant="&lt; inf" name="lock_resource_1" nameOffsetX="0" nameOffsetY="0" positionX="563" positionY="36"/>
+    <place displayName="true" id="swap_c1" initialMarking="0" invariant="&lt; inf" name="swap_c1" nameOffsetX="0" nameOffsetY="0" positionX="814" positionY="36"/>
+    <place displayName="true" id="unlock_resource_1" initialMarking="0" invariant="&lt; inf" name="unlock_resource_1" nameOffsetX="0" nameOffsetY="0" positionX="1014" positionY="36"/>
+    <place displayName="true" id="lock_resource_2" initialMarking="0" invariant="&lt; inf" name="lock_resource_2" nameOffsetX="0" nameOffsetY="0" positionX="611" positionY="158"/>
+    <place displayName="true" id="swap_c2" initialMarking="0" invariant="&lt; inf" name="swap_c2" nameOffsetX="0" nameOffsetY="0" positionX="840" positionY="161"/>
+    <place displayName="true" id="unlock_resource_2" initialMarking="0" invariant="&lt; inf" name="unlock_resource_2" nameOffsetX="0" nameOffsetY="0" positionX="909" positionY="273"/>
+    <place displayName="true" id="reset" initialMarking="0" invariant="&lt; inf" name="reset" nameOffsetX="0" nameOffsetY="0" positionX="459" positionY="369"/>
+    <place displayName="true" id="listening" initialMarking="2" invariant="&lt; inf" name="listening" nameOffsetX="0" nameOffsetY="0" positionX="107" positionY="281"/>
+    <transition angle="0" displayName="true" id="drone_listed_in_queue" infiniteServer="false" name="drone_listed_in_queue" nameOffsetX="0" nameOffsetY="0" player="0" positionX="236" positionY="90" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="available1" infiniteServer="false" name="available1" nameOffsetX="0" nameOffsetY="0" player="0" positionX="488" positionY="90" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="T10" infiniteServer="false" name="T10" nameOffsetX="0" nameOffsetY="0" player="0" positionX="697" positionY="34" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="not_available1" infiniteServer="false" name="not_available1" nameOffsetX="-8" nameOffsetY="-2" player="0" positionX="937" positionY="36" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="T11" infiniteServer="false" name="T11" nameOffsetX="0" nameOffsetY="0" player="0" positionX="735" positionY="158" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="not_available2" infiniteServer="false" name="not_available2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="959" positionY="159" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="T6" infiniteServer="false" name="T6" nameOffsetX="0" nameOffsetY="0" player="0" positionX="743" positionY="367" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="T7" infiniteServer="false" name="T7" nameOffsetX="0" nameOffsetY="0" player="0" positionX="106" positionY="356" priority="0" urgent="false"/>
+    <transition angle="90" displayName="true" id="T8" infiniteServer="false" name="T8" nameOffsetX="0" nameOffsetY="0" player="0" positionX="105" positionY="210" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="available2" infiniteServer="false" name="available2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="495" positionY="150" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="T12" infiniteServer="false" name="T12" nameOffsetX="0" nameOffsetY="0" player="0" positionX="743" positionY="277" priority="0" urgent="false"/>
+    <arc id="A0" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="choose" target="drone_listed_in_queue" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="131" yCoord="106"/>
+      <arcpath arcPointType="false" id="1" xCoord="246" yCoord="106"/>
+    </arc>
+    <arc id="A1" inscription="1" nameOffsetX="0" nameOffsetY="0" source="drone_listed_in_queue" target="checking" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="256" yCoord="106"/>
+      <arcpath arcPointType="false" id="1" xCoord="369" yCoord="106"/>
+    </arc>
+    <arc id="A2" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="checking" target="available1" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="399" yCoord="106"/>
+      <arcpath arcPointType="false" id="1" xCoord="499" yCoord="106"/>
+    </arc>
+    <arc id="A3" inscription="1" nameOffsetX="0" nameOffsetY="0" source="available1" target="lock_resource_1" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="509" yCoord="100"/>
+      <arcpath arcPointType="false" id="1" xCoord="566" yCoord="60"/>
+    </arc>
+    <arc id="A5" inscription="[0,10]" nameOffsetX="0" nameOffsetY="0" source="lock_resource_1" target="T10" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="593" yCoord="51"/>
+      <arcpath arcPointType="false" id="1" xCoord="707" yCoord="50"/>
+    </arc>
+    <arc id="A6" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T10" target="swap_c1" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="717" yCoord="50"/>
+      <arcpath arcPointType="false" id="1" xCoord="814" yCoord="51"/>
+    </arc>
+    <arc id="A7" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="swap_c1" target="not_available1" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="844" yCoord="51"/>
+      <arcpath arcPointType="false" id="1" xCoord="947" yCoord="51"/>
+    </arc>
+    <arc id="A8" inscription="1" nameOffsetX="0" nameOffsetY="0" source="not_available1" target="unlock_resource_1" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="957" yCoord="51"/>
+      <arcpath arcPointType="false" id="1" xCoord="1014" yCoord="51"/>
+    </arc>
+    <arc id="A9" inscription="[0,10]" nameOffsetX="0" nameOffsetY="0" source="lock_resource_2" target="T11" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="641" yCoord="174"/>
+      <arcpath arcPointType="false" id="1" xCoord="746" yCoord="174"/>
+    </arc>
+    <arc id="A10" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T11" target="swap_c2" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="756" yCoord="174"/>
+      <arcpath arcPointType="false" id="1" xCoord="840" yCoord="176"/>
+    </arc>
+    <arc id="A11" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="swap_c2" target="not_available2" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="870" yCoord="176"/>
+      <arcpath arcPointType="false" id="1" xCoord="969" yCoord="174"/>
+    </arc>
+    <arc id="A12" inscription="1" nameOffsetX="0" nameOffsetY="0" source="not_available2" target="unlock_resource_2" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="974" yCoord="189"/>
+      <arcpath arcPointType="false" id="1" xCoord="971" yCoord="286"/>
+      <arcpath arcPointType="false" id="2" xCoord="939" yCoord="287"/>
+    </arc>
+    <arc id="A14" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="unlock_resource_1" target="T6" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="1030" yCoord="66"/>
+      <arcpath arcPointType="false" id="1" xCoord="1031" yCoord="111"/>
+      <arcpath arcPointType="false" id="2" xCoord="1020" yCoord="380"/>
+      <arcpath arcPointType="false" id="3" xCoord="763" yCoord="383"/>
+    </arc>
+    <arc id="A15" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T6" target="reset" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="753" yCoord="383"/>
+      <arcpath arcPointType="false" id="1" xCoord="489" yCoord="384"/>
+    </arc>
+    <arc id="A16" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="reset" target="T7" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="459" yCoord="383"/>
+      <arcpath arcPointType="false" id="1" xCoord="126" yCoord="371"/>
+    </arc>
+    <arc id="A17" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T7" target="listening" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="121" yCoord="356"/>
+      <arcpath arcPointType="false" id="1" xCoord="123" yCoord="311"/>
+    </arc>
+    <arc id="A18" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="listening" target="T8" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="123" yCoord="281"/>
+      <arcpath arcPointType="false" id="1" xCoord="121" yCoord="256"/>
+      <arcpath arcPointType="false" id="2" xCoord="120" yCoord="230"/>
+    </arc>
+    <arc id="A19" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T8" target="choose" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="120" yCoord="220"/>
+      <arcpath arcPointType="false" id="1" xCoord="117" yCoord="120"/>
+    </arc>
+    <arc id="A20" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="checking" target="available2" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="397" yCoord="111"/>
+      <arcpath arcPointType="false" id="1" xCoord="506" yCoord="166"/>
+    </arc>
+    <arc id="A21" inscription="1" nameOffsetX="0" nameOffsetY="0" source="available2" target="lock_resource_2" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="516" yCoord="160"/>
+      <arcpath arcPointType="false" id="1" xCoord="611" yCoord="171"/>
+    </arc>
+    <arc id="A22" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="unlock_resource_2" target="T12" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="909" yCoord="289"/>
+      <arcpath arcPointType="false" id="1" xCoord="763" yCoord="293"/>
+    </arc>
+    <arc id="A23" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T12" target="reset" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="753" yCoord="293"/>
+      <arcpath arcPointType="false" id="1" xCoord="487" yCoord="379"/>
+    </arc>
+    <arc id="I22" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="unlock_resource_1" target="available1" type="tapnInhibitor" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="1020" yCoord="63"/>
+      <arcpath arcPointType="false" id="1" xCoord="984" yCoord="106"/>
+      <arcpath arcPointType="false" id="2" xCoord="509" yCoord="106"/>
+    </arc>
+    <arc id="I23" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="unlock_resource_2" target="available2" type="tapnInhibitor" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="924" yCoord="273"/>
+      <arcpath arcPointType="false" id="1" xCoord="924" yCoord="230"/>
+      <arcpath arcPointType="false" id="2" xCoord="697" yCoord="231"/>
+      <arcpath arcPointType="false" id="3" xCoord="516" yCoord="166"/>
+    </arc>
+  </net>
+  <net active="true" id="resource_1" type="P/T net">
+    <place displayName="true" id="checking" initialMarking="1" invariant="&lt; inf" name="checking" nameOffsetX="0" nameOffsetY="0" positionX="135" positionY="60"/>
+    <place displayName="true" id="lock" initialMarking="0" invariant="&lt; inf" name="lock" nameOffsetX="0" nameOffsetY="0" positionX="360" positionY="61"/>
+    <place displayName="true" id="unlock" initialMarking="0" invariant="&lt; inf" name="unlock" nameOffsetX="0" nameOffsetY="0" positionX="252" positionY="210"/>
+    <transition angle="0" displayName="true" id="available1" infiniteServer="false" name="available1" nameOffsetX="0" nameOffsetY="0" player="0" positionX="245" positionY="62" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="not_available1" infiniteServer="false" name="not_available1" nameOffsetX="0" nameOffsetY="0" player="0" positionX="379" positionY="209" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="T2" infiniteServer="false" name="T2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="120" positionY="210" priority="0" urgent="false"/>
+    <arc id="A0" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="checking" target="available1" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="164" yCoord="75"/>
+      <arcpath arcPointType="false" id="1" xCoord="254" yCoord="77"/>
+    </arc>
+    <arc id="A1" inscription="1" nameOffsetX="0" nameOffsetY="0" source="available1" target="lock" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="264" yCoord="77"/>
+      <arcpath arcPointType="false" id="1" xCoord="360" yCoord="76"/>
+    </arc>
+    <arc id="A2" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="lock" target="not_available1" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="390" yCoord="76"/>
+      <arcpath arcPointType="false" id="1" xCoord="457" yCoord="76"/>
+      <arcpath arcPointType="false" id="2" xCoord="457" yCoord="225"/>
+      <arcpath arcPointType="false" id="3" xCoord="398" yCoord="224"/>
+    </arc>
+    <arc id="A3" inscription="1" nameOffsetX="0" nameOffsetY="0" source="not_available1" target="unlock" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="388" yCoord="224"/>
+      <arcpath arcPointType="false" id="1" xCoord="281" yCoord="224"/>
+    </arc>
+    <arc id="A4" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="unlock" target="T2" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="252" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="139" yCoord="225"/>
+    </arc>
+    <arc id="A5" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T2" target="checking" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="129" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="85" yCoord="231"/>
+      <arcpath arcPointType="false" id="2" xCoord="86" yCoord="75"/>
+      <arcpath arcPointType="false" id="3" xCoord="135" yCoord="75"/>
+    </arc>
+  </net>
+  <net active="true" id="resource_2" type="P/T net">
+    <place displayName="true" id="checking" initialMarking="1" invariant="&lt; inf" name="checking" nameOffsetX="0" nameOffsetY="0" positionX="135" positionY="60"/>
+    <place displayName="true" id="lock" initialMarking="0" invariant="&lt; inf" name="lock" nameOffsetX="0" nameOffsetY="0" positionX="385" positionY="60"/>
+    <place displayName="true" id="unlock" initialMarking="0" invariant="&lt; inf" name="unlock" nameOffsetX="0" nameOffsetY="0" positionX="243" positionY="210"/>
+    <transition angle="0" displayName="true" id="available2" infiniteServer="false" name="available2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="239" positionY="60" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="not_available2" infiniteServer="false" name="not_available2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="400" positionY="211" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="T2" infiniteServer="false" name="T2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="120" positionY="210" priority="0" urgent="false"/>
+    <arc id="A0" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="checking" target="available2" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="165" yCoord="75"/>
+      <arcpath arcPointType="false" id="1" xCoord="248" yCoord="75"/>
+    </arc>
+    <arc id="A1" inscription="1" nameOffsetX="0" nameOffsetY="0" source="available2" target="lock" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="258" yCoord="75"/>
+      <arcpath arcPointType="false" id="1" xCoord="385" yCoord="75"/>
+    </arc>
+    <arc id="A2" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="lock" target="not_available2" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="414" yCoord="75"/>
+      <arcpath arcPointType="false" id="1" xCoord="489" yCoord="79"/>
+      <arcpath arcPointType="false" id="2" xCoord="489" yCoord="228"/>
+      <arcpath arcPointType="false" id="3" xCoord="419" yCoord="226"/>
+    </arc>
+    <arc id="A3" inscription="1" nameOffsetX="0" nameOffsetY="0" source="not_available2" target="unlock" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="409" yCoord="226"/>
+      <arcpath arcPointType="false" id="1" xCoord="272" yCoord="225"/>
+    </arc>
+    <arc id="A4" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="unlock" target="T2" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="243" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="139" yCoord="225"/>
+    </arc>
+    <arc id="A5" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T2" target="checking" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="129" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="85" yCoord="227"/>
+      <arcpath arcPointType="false" id="2" xCoord="86" yCoord="75"/>
+      <arcpath arcPointType="false" id="3" xCoord="135" yCoord="75"/>
+    </arc>
+  </net>
+  <net active="true" id="charge_station_2" type="P/T net">
+    <place displayName="true" id="idle" initialMarking="1" invariant="&lt; inf" name="idle" nameOffsetX="0" nameOffsetY="0" positionX="105" positionY="75"/>
+    <place displayName="true" id="swapping_battery" initialMarking="0" invariant="&lt; inf" name="swapping_battery" nameOffsetX="0" nameOffsetY="0" positionX="348" positionY="76"/>
+    <place displayName="true" id="discharge" initialMarking="0" invariant="&lt; inf" name="discharge" nameOffsetX="0" nameOffsetY="0" positionX="206" positionY="210"/>
+    <transition angle="0" displayName="true" id="available2" infiniteServer="false" name="available2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="219" positionY="76" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="not_available2" infiniteServer="false" name="not_available2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="356" positionY="210" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="T2" infiniteServer="false" name="T2" nameOffsetX="0" nameOffsetY="0" player="0" positionX="105" positionY="210" priority="0" urgent="false"/>
+    <arc id="A0" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="idle" target="available2" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="134" yCoord="90"/>
+      <arcpath arcPointType="false" id="1" xCoord="228" yCoord="91"/>
+    </arc>
+    <arc id="A1" inscription="1" nameOffsetX="0" nameOffsetY="0" source="available2" target="swapping_battery" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="238" yCoord="91"/>
+      <arcpath arcPointType="false" id="1" xCoord="348" yCoord="91"/>
+    </arc>
+    <arc id="A2" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="swapping_battery" target="not_available2" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="377" yCoord="91"/>
+      <arcpath arcPointType="false" id="1" xCoord="469" yCoord="94"/>
+      <arcpath arcPointType="false" id="2" xCoord="469" yCoord="228"/>
+      <arcpath arcPointType="false" id="3" xCoord="375" yCoord="225"/>
+    </arc>
+    <arc id="A3" inscription="1" nameOffsetX="0" nameOffsetY="0" source="not_available2" target="discharge" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="365" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="236" yCoord="225"/>
+    </arc>
+    <arc id="A4" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="discharge" target="T2" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="206" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="124" yCoord="225"/>
+    </arc>
+    <arc id="A5" inscription="1" nameOffsetX="0" nameOffsetY="0" source="T2" target="idle" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="114" yCoord="225"/>
+      <arcpath arcPointType="false" id="1" xCoord="64" yCoord="225"/>
+      <arcpath arcPointType="false" id="2" xCoord="61" yCoord="92"/>
+      <arcpath arcPointType="false" id="3" xCoord="105" yCoord="90"/>
+    </arc>
+  </net>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="false" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="No deadlock in Scheduling drone system" overApproximation="false" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <all-paths>
+        <globally>
+          <negation>
+            <deadlock/>
+          </negation>
+        </globally>
+      </all-paths>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="false" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="atleast one token (scheduler) in c1 and lock_resource" overApproximation="false" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="false" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <globally>
+          <conjunction>
+            <integer-eq>
+              <tokens-count>
+                <place>scheduler.lock_resource_1</place>
+              </tokens-count>
+              <integer-constant>0</integer-constant>
+            </integer-eq>
+            <integer-eq>
+              <tokens-count>
+                <place>scheduler.swap_c1</place>
+              </tokens-count>
+              <integer-constant>0</integer-constant>
+            </integer-eq>
+          </conjunction>
+        </globally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="false" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="scheduler.c1 and scheduler.lock_resource_1 cannot have token at the same time" overApproximation="false" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="false" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <globally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>scheduler.lock_resource_1</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>scheduler.swap_c1</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </globally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="false" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="scheduler.c2 and scheduler.lock_resource_2 cannot have token at the same time" overApproximation="false" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="false" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <globally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>scheduler.lock_resource_2</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>scheduler.swap_c2</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </globally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="false" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="scheduler.lock_resource_1 and scheduler.unlock_resource_1 cannot have token at the same time" overApproximation="false" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="false" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <globally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>scheduler.lock_resource_1</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>scheduler.unlock_resource_1</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </globally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="false" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="scheduler.lock_resource_1 and scheduler.unlock_resource_1 cannot have token at the same time" overApproximation="false" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="false" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <globally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>scheduler.lock_resource_2</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>scheduler.unlock_resource_2</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </globally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="scheduler.swap_c1 and scheduler.swap_c2 can have a token at the same time" overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <disjunction>
+            <integer-eq>
+              <tokens-count>
+                <place>scheduler.swap_c1</place>
+              </tokens-count>
+              <integer-constant>1</integer-constant>
+            </integer-eq>
+            <integer-eq>
+              <tokens-count>
+                <place>scheduler.swap_c2</place>
+              </tokens-count>
+              <integer-constant>1</integer-constant>
+            </integer-eq>
+          </disjunction>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="request_handler must have atleast one token " overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>request_handler.waiting</place>
+                </tokens-count>
+                <integer-constant>0</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>request_handler.update</place>
+                </tokens-count>
+                <integer-constant>0</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>request_handler.listening</place>
+                </tokens-count>
+                <integer-constant>0</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="request_handler.listening and request_handler.update must not have token at the same time" overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>request_handler.listening</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>request_handler.update</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="request_handler.update token must not more than 1" overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <negation>
+            <integer-gt>
+              <tokens-count>
+                <place>request_handler.update</place>
+              </tokens-count>
+              <integer-constant>1</integer-constant>
+            </integer-gt>
+          </negation>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="drone_queue must have atleast one token " overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>drone_queue.idle</place>
+                </tokens-count>
+                <integer-constant>0</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>drone_queue.busy</place>
+                </tokens-count>
+                <integer-constant>0</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="drone_queue.idle and drone_queue.busy must not have token at the same time" overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>drone_queue.idle</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>drone_queue.busy</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="resource_1.lock and resource_1.unlock must not have token at the same time" overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>resource_1.lock</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>resource_1.unlock</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="resource_2.lock and resource_2.unlock must not have token at the same time" overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>resource_2.lock</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>resource_2.unlock</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="charge_station_1 must not have more than one token at each place" overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <negation>
+            <conjunction>
+              <integer-gt>
+                <tokens-count>
+                  <place>charge_station_1.idle</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-gt>
+              <integer-gt>
+                <tokens-count>
+                  <place>charge_station_1.swapping_battery</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-gt>
+              <integer-gt>
+                <tokens-count>
+                  <place>charge_station_1.discharge</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-gt>
+            </conjunction>
+          </negation>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="charge_station_1.swapping_battery and charge_station_1.discharge cannot have a token at the same time" overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>charge_station_1.swapping_battery</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>charge_station_1.discharge</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="charge_station_2 must not have more than one token at each place" overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <negation>
+            <conjunction>
+              <integer-gt>
+                <tokens-count>
+                  <place>charge_station_2.idle</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-gt>
+              <integer-gt>
+                <tokens-count>
+                  <place>charge_station_2.swapping_battery</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-gt>
+              <integer-gt>
+                <tokens-count>
+                  <place>charge_station_2.discharge</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-gt>
+            </conjunction>
+          </negation>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <query active="true" algorithmOption="CERTAIN_ZERO" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="charge_station_2.swapping_battery and charge_station_2.discharge cannot have a token at the same time" overApproximation="true" pTrie="true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" type="Default" useQueryReduction="true" useSiphonTrapAnalysis="false" useStubbornReduction="true" useTarOption="false" useTarjan="false">
+    <formula>
+      <exists-path>
+        <finally>
+          <negation>
+            <conjunction>
+              <integer-eq>
+                <tokens-count>
+                  <place>charge_station_2.discharge</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+              <integer-eq>
+                <tokens-count>
+                  <place>charge_station_2.swapping_battery</place>
+                </tokens-count>
+                <integer-constant>1</integer-constant>
+              </integer-eq>
+            </conjunction>
+          </negation>
+        </finally>
+      </exists-path>
+    </formula>
+  </query>
+  <k-bound bound="3"/>
+  <feature isGame="false" isTimed="true"/>
+</pnml>
